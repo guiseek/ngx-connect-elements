@@ -1,0 +1,144 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "ngx-connect-elements": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/workspace:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/ngx-connect-elements",
+      "sourceRoot": "apps/ngx-connect-elements/src",
+      "prefix": "ngx-connect-elements",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/ngx-connect-elements",
+            "index": "apps/ngx-connect-elements/src/index.html",
+            "main": "apps/ngx-connect-elements/src/main.ts",
+            "polyfills": "apps/ngx-connect-elements/src/polyfills.ts",
+            "tsConfig": "apps/ngx-connect-elements/tsconfig.app.json",
+            "assets": [
+              "apps/ngx-connect-elements/src/favicon.ico",
+              "apps/ngx-connect-elements/src/assets"
+            ],
+            "styles": ["apps/ngx-connect-elements/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/ngx-connect-elements/src/environments/environment.ts",
+                  "with": "apps/ngx-connect-elements/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ngx-connect-elements:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-connect-elements:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngx-connect-elements:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/ngx-connect-elements/tsconfig.app.json",
+              "apps/ngx-connect-elements/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/ngx-connect-elements/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/ngx-connect-elements/jest.config.js",
+            "tsConfig": "apps/ngx-connect-elements/tsconfig.spec.json",
+            "setupFile": "apps/ngx-connect-elements/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "ngx-connect-elements-e2e": {
+      "root": "apps/ngx-connect-elements-e2e",
+      "sourceRoot": "apps/ngx-connect-elements-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ngx-connect-elements-e2e/cypress.json",
+            "tsConfig": "apps/ngx-connect-elements-e2e/tsconfig.e2e.json",
+            "devServerTarget": "ngx-connect-elements:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngx-connect-elements:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/ngx-connect-elements-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/ngx-connect-elements-e2e/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "ngx-connect-elements"
+}
