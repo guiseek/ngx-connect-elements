@@ -13,6 +13,9 @@
     },
     "ngx-connect-elements": {
       "tags": []
+    },
+    "svg": {
+      "tags": ["public-module"]
     }
   }
 }

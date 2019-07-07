@@ -122,6 +122,40 @@
           }
         }
       }
+    },
+    "svg": {
+      "projectType": "library",
+      "root": "libs/svg",
+      "sourceRoot": "libs/svg/src",
+      "prefix": "ngce",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/svg/tsconfig.lib.json",
+            "project": "libs/svg/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/svg/tsconfig.lib.json",
+              "libs/svg/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/svg/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/svg/jest.config.js",
+            "tsConfig": "libs/svg/tsconfig.spec.json",
+            "setupFile": "libs/svg/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {
@@ -140,5 +174,5 @@
       "unitTestRunner": "jest"
     }
   },
-  "defaultProject": "ngx-connect-elements"
+  "defaultProject": "svg"
 }
