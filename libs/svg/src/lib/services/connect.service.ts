@@ -1,16 +1,22 @@
-import { Injectable, Renderer2 } from '@angular/core';
+import { Injectable, Renderer2, HostListener } from '@angular/core';
+interface Connection {
+  left: any,
+  right: any
+}
+
 
 @Injectable()
 export class ConnectService {
-  connection = {
+  connection: Connection = {
     left: null,
     right: null
   }
+  connections: Connection[] = []
   // width = this.el.nativeElement.width
   element: HTMLElement
   renderer: Renderer2
   constructor() {
-
+    this.connections.push(this.connection)
   }
   connect(data) {
     const { left, right } = this.connection
@@ -23,10 +29,27 @@ export class ConnectService {
       this.finishConnect(this.connection)
     }
   }
+  resizeConnections() {
+    console.log('this.connections: ', this.connections)
+    const connections = this.connections
+    console.log('right: ', this.connections)
+    this.connections = []
+    this.connections.forEach(({left, right}) => {
+      console.log('connection: ', left, right)
+      // console.log('right: ', right)
+      // this.connectDivs(left, right, '#2c6cd3', 0.6)
+      // this.connections.push({ left, right })
+    })
+  }
   finishConnect({ left, right }) {
-    console.log(left, right)
+    // console.log(left, right)
     if (left !== right) {
       this.connectDivs(left, right, '#2c6cd3', 0.6)
+      // const { dataset } = this.connection
+      console.log({left, right})
+      this.connections.push({ left, right })
+      console.log('left right: ', left, right)
+      console.log('this.connections: ', this.connections)
       this.connection = {
         left: null,
         right: null
@@ -34,7 +57,22 @@ export class ConnectService {
     }
     // this.changeSvgLayer(4)
   }
-
+  public findDuplicateConnections(connection: Connection[]) {
+    return connection.filter((c) => {
+      return connection.some(c => !!c)
+    })
+    // return this.connections.includes(connection);
+  }
+  public getConnectionsFor(source: any) {
+    return this.connections.filter(({ left: a }) => a === source);
+  }
+  public removeConnection(source: any, i: number) {
+    const sinks = this.getConnectionsFor(source);
+    const r = this.connections.filter(({ left, right }) => {
+      return !(left === source) && !(right === sinks[i].right);
+    });
+    return r;
+  }
   createSVG() {
     // let svg: any = this.elementRef.getElementById("svg-canvas");
     let svg = this.element.querySelector('#svg-canvas')
@@ -100,7 +138,7 @@ export class ConnectService {
     const svg = this.createSVG();
     const shape = document.createElementNS("http://www.w3.org/2000/svg",
       "path"); {
-      console.log('x1: ', x1, 'y1: ', y1, 'x2: ', x2, 'y2: ', y2);
+      // console.log('x1: ', x1, 'y1: ', y1, 'x2: ', x2, 'y2: ', y2);
       let path
       if (tension < 0) {
         const delta = (y2 - y1) * tension;
@@ -150,10 +188,12 @@ export class ConnectService {
     // return color;
   }
   connectDivs(leftId, rightId, color, tension) {
-    const left = this.connection.left;
-    const right = this.connection.right;
+    const left = this.connection.left || leftId
+    const right = this.connection.right || rightId
+    // const left = this.connection.left;
+    // const right = this.connection.right;
     console.log(
-      left.dataset.connect
+      leftId, rightId
     )
     // this.connections.push(left.getAttribute('data-connect'), right)
 

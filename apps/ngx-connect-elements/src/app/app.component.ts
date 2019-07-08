@@ -13,6 +13,9 @@ export class AppComponent {
       id: 3,
       name: 'Gui Seek'
     }, {
+      id: 5,
+      name: 'Rogério Araujo da Silva'
+    }, {
       id: 4,
       name: 'Munif Geba'
     }],
@@ -22,8 +25,12 @@ export class AppComponent {
     }, {
       id: 2,
       name: 'Tiago Ogava'
+    }, {
+      id: 6,
+      name: 'Gustavo Costa'
     }]
   }
+  connections = this.connection.connections
   constructor(
     private connection: ConnectService,
     private renderer: Renderer2,
@@ -31,8 +38,17 @@ export class AppComponent {
   ) {
     this.connection.element = element.nativeElement
     this.connection.renderer = renderer
+    window.setTimeout(() => {
+      this.checkDeplicates()
+      console.log('this.checkDeplicates(): ', this.checkDeplicates())
+    }, 3000)
   }
   onConnecting(data) {
     console.log('connecting: ', data)
+  }
+  checkDeplicates() {
+    this.connection.findDuplicateConnections(
+      this.connection.connections
+    )
   }
 }
